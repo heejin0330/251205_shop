@@ -79,6 +79,11 @@ export default async function OrderDetailPage({
             <p className="text-lg font-medium">
               {statusLabels[order.status] || order.status}
             </p>
+            {order.status === "pending" && (
+              <Link href={`/payments/${order.id}`} className="mt-4 block">
+                <Button>결제하기</Button>
+              </Link>
+            )}
           </div>
 
           {/* 주문 상품 */}

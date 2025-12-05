@@ -53,11 +53,22 @@
     - [x] 주문 완료 페이지 (`app/orders/[id]/page.tsx`)
   - [x] 주문테이블 저장(`orders`, `order_items`) 및 합계 검증
 
-- [ ] Phase 4: 결제 통합 (Toss Payments 테스트 모드)
+- [x] Phase 4: 결제 통합 (Toss Payments 테스트 모드)
 
-  - [ ] 결제위젯 연동 및 클라이언트 플로우 구축
-  - [ ] 결제 성공/실패 콜백 처리
-  - [ ] 결제 완료 후 주문 상태 업데이트(`orders.status`)
+  - [x] 결제위젯 연동 및 클라이언트 플로우 구축
+    - [x] Toss Payments SDK 설치 (`@tosspayments/payment-widget-sdk`)
+    - [x] 결제 타입 정의 (`types/payment.ts`)
+    - [x] 결제 위젯 컴포넌트 (`components/payment/toss-payment-widget.tsx`)
+    - [x] 결제 페이지 (`app/payments/[orderId]/page.tsx`)
+    - [x] 주문 생성 후 결제 페이지로 리다이렉트
+  - [x] 결제 성공/실패 콜백 처리
+    - [x] 결제 성공 페이지 (`app/payments/success/page.tsx`)
+    - [x] 결제 실패 페이지 (`app/payments/fail/page.tsx`)
+    - [x] 결제 승인 API 라우트 (`app/api/payments/confirm/route.ts`)
+  - [x] 결제 완료 후 주문 상태 업데이트(`orders.status`)
+    - [x] 결제 승인 후 주문 상태를 `confirmed`로 업데이트
+    - [x] 결제 실패 시 주문 상태를 `cancelled`로 업데이트
+    - [x] 주문 상세 페이지에 결제하기 버튼 추가 (pending 상태일 때)
 
 - [ ] Phase 5: 마이페이지
 

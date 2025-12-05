@@ -67,7 +67,8 @@ export function CheckoutForm({ totalPrice }: CheckoutFormProps) {
     });
 
     if (result.success && result.orderId) {
-      router.push(`/orders/${result.orderId}`);
+      // 주문 생성 후 결제 페이지로 리다이렉트
+      router.push(`/payments/${result.orderId}`);
       router.refresh();
     } else {
       alert(result.error || "주문 생성에 실패했습니다.");
