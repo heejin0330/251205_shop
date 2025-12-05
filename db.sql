@@ -21,7 +21,7 @@
   CREATE TABLE IF NOT EXISTS public.cart_items (
       id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
       clerk_id TEXT NOT NULL,
-      product_id UUID NOT NULL REFERENCES products(id) ON DELETE
+      product_id UUID NOT NULL REFERENCES public.products(id) ON DELETE
   CASCADE,
       quantity INTEGER NOT NULL DEFAULT 1 CHECK (quantity > 0),
       created_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
@@ -46,8 +46,8 @@
   -- 4. 주문 상세 테이블 생성
   CREATE TABLE IF NOT EXISTS public.order_items (
       id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-      order_id UUID NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
-      product_id UUID NOT NULL REFERENCES products(id) ON DELETE
+      order_id UUID NOT NULL REFERENCES public.orders(id) ON DELETE CASCADE,
+      product_id UUID NOT NULL REFERENCES public.products(id) ON DELETE
   RESTRICT,
       product_name TEXT NOT NULL,
       quantity INTEGER NOT NULL CHECK (quantity > 0),
@@ -66,35 +66,35 @@
 
   -- 6. updated_at 트리거 등록
   CREATE TRIGGER set_updated_at_products
-      BEFORE UPDATE ON products
+      BEFORE UPDATE ON public.products
       FOR EACH ROW
       EXECUTE FUNCTION update_updated_at_column();
 
   CREATE TRIGGER set_updated_at_cart_items
-      BEFORE UPDATE ON cart_items
+      BEFORE UPDATE ON public.cart_items
       FOR EACH ROW
       EXECUTE FUNCTION update_updated_at_column();
 
   CREATE TRIGGER set_updated_at_orders
-      BEFORE UPDATE ON orders
+      BEFORE UPDATE ON public.orders
       FOR EACH ROW
       EXECUTE FUNCTION update_updated_at_column();
 
   -- 7. 인덱스 생성 (성능 최적화)
   CREATE INDEX IF NOT EXISTS idx_cart_items_clerk_id ON
-  cart_items(clerk_id);
+  public.cart_items(clerk_id);
   CREATE INDEX IF NOT EXISTS idx_cart_items_product_id ON
-  cart_items(product_id);
-  CREATE INDEX IF NOT EXISTS idx_orders_clerk_id ON orders(clerk_id);
-  CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(status);
+  public.cart_items(product_id);
+  CREATE INDEX IF NOT EXISTS idx_orders_clerk_id ON public.orders(clerk_id);
+  CREATE INDEX IF NOT EXISTS idx_orders_status ON public.orders(status);
   CREATE INDEX IF NOT EXISTS idx_orders_created_at ON
-  orders(created_at DESC);
+  public.orders(created_at DESC);
   CREATE INDEX IF NOT EXISTS idx_order_items_order_id ON
-  order_items(order_id);
+  public.order_items(order_id);
   CREATE INDEX IF NOT EXISTS idx_products_category ON
-  products(category);
+  public.products(category);
   CREATE INDEX IF NOT EXISTS idx_products_is_active ON
-  products(is_active);
+  public.products(is_active);
 
   -- 8. RLS 비활성화
   ALTER TABLE public.products DISABLE ROW LEVEL SECURITY;
@@ -119,7 +119,7 @@
   service_role;
 
  -- 11. 샘플 데이터 (개발용 - 20개)
-  INSERT INTO products (name, description, price, category, stock_quantity) VALUES
+  INSERT INTO public.products (name, description, price, category, stock_quantity) VALUES
   -- 전자제품 (5개)
   ('무선 블루투스 이어폰', '고음질 노이즈 캔슬링 기능, 30시간 재생', 89000, 'electronics',
   150),
